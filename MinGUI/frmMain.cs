@@ -26,7 +26,7 @@ namespace MinGUI
             SQLiteConnection.CreateFile("mingui.db");
             SQLiteConnection conn = new SQLiteConnection("Data Source=mingui.db; Version=3;");
             conn.Open();
-            SQLiteCommand createLibraries = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Libraries(libID INT AUTO_INCREMENT NOT NULL, libSyntax VARCHAR(255) NOT NULL)", conn);
+            SQLiteCommand createLibraries = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Libraries(libID INT AUTO_INCREMENT NOT NULL, libName VARCHAR(255) NOT NULL, libSyntax VARCHAR(255) NOT NULL)", conn);
             createLibraries.ExecuteNonQuery();
         }
 

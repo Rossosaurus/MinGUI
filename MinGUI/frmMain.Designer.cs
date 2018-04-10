@@ -45,13 +45,13 @@
             this.rbCompile = new System.Windows.Forms.RadioButton();
             this.rbAssembly = new System.Windows.Forms.RadioButton();
             this.rbBuild = new System.Windows.Forms.RadioButton();
+            this.pbLogo = new System.Windows.Forms.PictureBox();
             this.tlpLibraries = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnAddLib = new System.Windows.Forms.Button();
             this.cblLibs = new System.Windows.Forms.CheckedListBox();
             this.lblLibs = new System.Windows.Forms.Label();
-            this.pbLogo = new System.Windows.Forms.PictureBox();
             this.tlpMain.SuspendLayout();
             this.tlpLeft.SuspendLayout();
             this.tlpItems.SuspendLayout();
@@ -59,9 +59,9 @@
             this.tlpName.SuspendLayout();
             this.tlpLanguage.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.tlpLibraries.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // ofdSelectFile
@@ -255,6 +255,17 @@
             this.rbBuild.Text = "Build and Output to exe";
             this.rbBuild.UseVisualStyleBackColor = true;
             // 
+            // pbLogo
+            // 
+            this.pbLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbLogo.Image = global::MinGUI.Properties.Resources.icon;
+            this.pbLogo.Location = new System.Drawing.Point(3, 3);
+            this.pbLogo.Name = "pbLogo";
+            this.pbLogo.Size = new System.Drawing.Size(463, 258);
+            this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbLogo.TabIndex = 4;
+            this.pbLogo.TabStop = false;
+            // 
             // tlpLibraries
             // 
             this.tlpLibraries.ColumnCount = 1;
@@ -328,17 +339,6 @@
             this.lblLibs.Text = "Select External Libraries";
             this.lblLibs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // pbLogo
-            // 
-            this.pbLogo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbLogo.Image = global::MinGUI.Properties.Resources.icon;
-            this.pbLogo.Location = new System.Drawing.Point(3, 3);
-            this.pbLogo.Name = "pbLogo";
-            this.pbLogo.Size = new System.Drawing.Size(463, 258);
-            this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbLogo.TabIndex = 4;
-            this.pbLogo.TabStop = false;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -359,10 +359,10 @@
             this.tlpLanguage.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.tlpLibraries.ResumeLayout(false);
             this.tlpLibraries.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.ResumeLayout(false);
 
         }

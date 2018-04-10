@@ -21,3 +21,4 @@ P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.pdb
 P:\C#\MinGUI\MinGUI\bin\Debug\System.Data.SQLite.dll
 C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\bin\Debug\System.Data.SQLite.dll
 C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmAddLib.resources
+C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.csproj.CopyComplete
