@@ -28,16 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.ofdSelectFile = new System.Windows.Forms.OpenFileDialog();
             this.lblExtension = new System.Windows.Forms.Label();
             this.txtbxFileName = new System.Windows.Forms.TextBox();
+            this.cmsFile = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.selectFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drpdnLanguage = new System.Windows.Forms.ComboBox();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tlpLeft = new System.Windows.Forms.TableLayoutPanel();
             this.tlpItems = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpFile = new System.Windows.Forms.TableLayoutPanel();
-            this.lblFilePath = new System.Windows.Forms.Label();
             this.tlpName = new System.Windows.Forms.TableLayoutPanel();
             this.tlpLanguage = new System.Windows.Forms.TableLayoutPanel();
             this.lblOutput = new System.Windows.Forms.Label();
@@ -45,6 +47,7 @@
             this.rbCompile = new System.Windows.Forms.RadioButton();
             this.rbAssembly = new System.Windows.Forms.RadioButton();
             this.rbBuild = new System.Windows.Forms.RadioButton();
+            this.txtbxFilePath = new System.Windows.Forms.TextBox();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.tlpLibraries = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -52,10 +55,10 @@
             this.btnAddLib = new System.Windows.Forms.Button();
             this.cblLibs = new System.Windows.Forms.CheckedListBox();
             this.lblLibs = new System.Windows.Forms.Label();
+            this.cmsFile.SuspendLayout();
             this.tlpMain.SuspendLayout();
             this.tlpLeft.SuspendLayout();
             this.tlpItems.SuspendLayout();
-            this.tlpFile.SuspendLayout();
             this.tlpName.SuspendLayout();
             this.tlpLanguage.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -67,6 +70,7 @@
             // ofdSelectFile
             // 
             this.ofdSelectFile.FileName = "openFileDialog1";
+            this.ofdSelectFile.FileOk += new System.ComponentModel.CancelEventHandler(this.ofdSelectFile_FileOk);
             // 
             // lblExtension
             // 
@@ -82,11 +86,35 @@
             // 
             // txtbxFileName
             // 
+            this.txtbxFileName.ContextMenuStrip = this.cmsFile;
             this.txtbxFileName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtbxFileName.Location = new System.Drawing.Point(3, 3);
             this.txtbxFileName.Name = "txtbxFileName";
             this.txtbxFileName.Size = new System.Drawing.Size(410, 20);
             this.txtbxFileName.TabIndex = 4;
+            this.txtbxFileName.Text = "Program Name";
+            // 
+            // cmsFile
+            // 
+            this.cmsFile.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectFileToolStripMenuItem,
+            this.clearToolStripMenuItem});
+            this.cmsFile.Name = "cmsFile";
+            this.cmsFile.Size = new System.Drawing.Size(127, 48);
+            // 
+            // selectFileToolStripMenuItem
+            // 
+            this.selectFileToolStripMenuItem.Name = "selectFileToolStripMenuItem";
+            this.selectFileToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.selectFileToolStripMenuItem.Text = "Select File";
+            this.selectFileToolStripMenuItem.Click += new System.EventHandler(this.selectFileToolStripMenuItem_Click);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // drpdnLanguage
             // 
@@ -101,12 +129,14 @@
             // 
             // tlpMain
             // 
+            this.tlpMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tlpMain.ColumnCount = 2;
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67.80627F));
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 32.19373F));
             this.tlpMain.Controls.Add(this.tlpLeft, 0, 0);
             this.tlpMain.Controls.Add(this.tlpLibraries, 1, 0);
-            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMain.Location = new System.Drawing.Point(0, 0);
             this.tlpMain.Name = "tlpMain";
             this.tlpMain.RowCount = 1;
@@ -132,11 +162,11 @@
             // 
             this.tlpItems.ColumnCount = 1;
             this.tlpItems.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpItems.Controls.Add(this.tlpFile, 0, 0);
             this.tlpItems.Controls.Add(this.tlpName, 0, 1);
             this.tlpItems.Controls.Add(this.tlpLanguage, 0, 2);
             this.tlpItems.Controls.Add(this.lblOutput, 0, 4);
             this.tlpItems.Controls.Add(this.panel1, 0, 3);
+            this.tlpItems.Controls.Add(this.txtbxFilePath, 0, 0);
             this.tlpItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpItems.Location = new System.Drawing.Point(3, 267);
             this.tlpItems.Name = "tlpItems";
@@ -149,29 +179,6 @@
             this.tlpItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpItems.Size = new System.Drawing.Size(463, 259);
             this.tlpItems.TabIndex = 3;
-            // 
-            // tlpFile
-            // 
-            this.tlpFile.ColumnCount = 1;
-            this.tlpFile.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 83.16008F));
-            this.tlpFile.Controls.Add(this.lblFilePath, 0, 0);
-            this.tlpFile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpFile.Location = new System.Drawing.Point(3, 3);
-            this.tlpFile.Name = "tlpFile";
-            this.tlpFile.RowCount = 1;
-            this.tlpFile.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpFile.Size = new System.Drawing.Size(457, 28);
-            this.tlpFile.TabIndex = 2;
-            // 
-            // lblFilePath
-            // 
-            this.lblFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblFilePath.BackColor = System.Drawing.Color.White;
-            this.lblFilePath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblFilePath.Location = new System.Drawing.Point(3, 2);
-            this.lblFilePath.Name = "lblFilePath";
-            this.lblFilePath.Size = new System.Drawing.Size(451, 23);
-            this.lblFilePath.TabIndex = 0;
             // 
             // tlpName
             // 
@@ -254,6 +261,17 @@
             this.rbBuild.TabIndex = 11;
             this.rbBuild.Text = "Build and Output to exe";
             this.rbBuild.UseVisualStyleBackColor = true;
+            // 
+            // txtbxFilePath
+            // 
+            this.txtbxFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtbxFilePath.Location = new System.Drawing.Point(6, 9);
+            this.txtbxFilePath.Margin = new System.Windows.Forms.Padding(6, 9, 3, 3);
+            this.txtbxFilePath.Name = "txtbxFilePath";
+            this.txtbxFilePath.Size = new System.Drawing.Size(454, 20);
+            this.txtbxFilePath.TabIndex = 9;
+            this.txtbxFilePath.Text = "File Location";
             // 
             // pbLogo
             // 
@@ -349,11 +367,11 @@
             this.Name = "frmMain";
             this.Text = "MinGUI";
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.cmsFile.ResumeLayout(false);
             this.tlpMain.ResumeLayout(false);
             this.tlpLeft.ResumeLayout(false);
             this.tlpItems.ResumeLayout(false);
             this.tlpItems.PerformLayout();
-            this.tlpFile.ResumeLayout(false);
             this.tlpName.ResumeLayout(false);
             this.tlpName.PerformLayout();
             this.tlpLanguage.ResumeLayout(false);
@@ -374,8 +392,6 @@
         private System.Windows.Forms.TextBox txtbxFileName;
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.TableLayoutPanel tlpItems;
-        private System.Windows.Forms.TableLayoutPanel tlpFile;
-        private System.Windows.Forms.Label lblFilePath;
         private System.Windows.Forms.TableLayoutPanel tlpName;
         private System.Windows.Forms.TableLayoutPanel tlpLeft;
         private System.Windows.Forms.PictureBox pbLogo;
@@ -391,5 +407,9 @@
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.CheckedListBox cblLibs;
         private System.Windows.Forms.Label lblLibs;
+        private System.Windows.Forms.ContextMenuStrip cmsFile;
+        private System.Windows.Forms.ToolStripMenuItem selectFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+        private System.Windows.Forms.TextBox txtbxFilePath;
     }
 }
