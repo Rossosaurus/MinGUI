@@ -24,12 +24,15 @@ namespace MinGUI
         public frmAddLib()
         {
             InitializeComponent();
+            this.FormClosing += new FormClosingEventHandler(frmAddLib_Close);
         }
 
         private void frmAddLib_Load(object sender, EventArgs e)
         {
             conn.Open();
             procInfo.WindowStyle = ProcessWindowStyle.Normal;
+            this.Focus();
+
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
@@ -38,6 +41,7 @@ namespace MinGUI
             procInfo.FileName = "MinGW\\bin\\mingw-get.exe";
             proc.StartInfo = procInfo;
             proc.Start();
+            lblMingwOut.Text = "Opened MinGW config. Library can now be added to DB";
         }
 
         private void btnGo_Click(object sender, EventArgs e)
@@ -71,15 +75,15 @@ namespace MinGUI
                         lblManOut.Text = "Check performed to ensure library exists returned false:\n    Bin: " + (Directory.Exists(txtbxBin.Text) + "\n    Include: " + Directory.Exists(txtbxInc.Text) + "\n    Lib: " + Directory.Exists(txtbxLib.Text));
                     }
                 }
+                else if (txtbxBin.Text == "" && txtbxInc.Text == "" && txtbxLib.Text == "")
+                {
+                    SQLiteCommand appendLib = new SQLiteCommand("INSERT INTO Libraries (libName, libSyntax) VALUES (\"" + txtbxName.Text.ToString() + "\", \"" + txtbxSyntax.Text.ToString() + "\");", conn);
+                    appendLib.ExecuteNonQuery();
+                }
                 else if (txtbxBin.Text == "" || txtbxInc.Text == "" || txtbxLib.Text == "")
                 {
                     lblManOut.Text = "One of the directories required is empty";
-                }
-                else if (txtbxBin.Text == "" && txtbxInc.Text == "" && txtbxLib.Text == "")
-                {
-                    SQLiteCommand appendLib = new SQLiteCommand("INSERT INTO Libraries (libName, libSyntax) VALUES (\"" + txtbxName.Text + "\", \"" + txtbxSyntax.Text + "\");", conn);
-                    appendLib.ExecuteNonQuery();
-                }
+                }                
                 else
                 {
                     MessageBox.Show("Something's fucked");
@@ -93,7 +97,7 @@ namespace MinGUI
                 {
                     SQLiteCommand addLib = new SQLiteCommand("INSERT INTO Libraries(libName, libSyntax) VALUES (\"" + txtbxNameGW.Text + "\", \"" + txtbxSyntaxGW.Text + "\");", conn);
                     addLib.ExecuteNonQuery();
-                    lblMingwOut.Text = "Library successfully added to the database";
+                    lblMingwOut.Text += "\nLibrary successfully added to the database";
                 }
                 else
                 {
@@ -104,6 +108,10 @@ namespace MinGUI
             if (oops)
             {
                 MessageBox.Show("Somthing went wrong, either you didn't fill in any inputs or didn't fill enough inputs or somethings screwed. If it's the latter and this error persists please post a bug on github.com/Rossosaurus/MinGUi");
+            }
+            else
+            {
+                this.Hide();
             }
         }
 
@@ -116,6 +124,12 @@ namespace MinGUI
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
             cmsSelect.SourceControl.Text = "";
+        }
+
+        private void frmAddLib_Close(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
         }
     }
 }

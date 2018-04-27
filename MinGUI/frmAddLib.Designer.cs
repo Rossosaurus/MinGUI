@@ -33,7 +33,6 @@
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tlpMinGW = new System.Windows.Forms.TableLayoutPanel();
             this.btnOpen = new System.Windows.Forms.Button();
-            this.lblOpen = new System.Windows.Forms.Label();
             this.lblSyntaxGW = new System.Windows.Forms.Label();
             this.txtbxSyntaxGW = new System.Windows.Forms.TextBox();
             this.btnGo = new System.Windows.Forms.Button();
@@ -55,17 +54,22 @@
             this.lblLib = new System.Windows.Forms.Label();
             this.lblSyntax = new System.Windows.Forms.Label();
             this.txtbxName = new System.Windows.Forms.TextBox();
+            this.pnlManOut = new System.Windows.Forms.Panel();
             this.lblManOut = new System.Windows.Forms.Label();
+            this.pnlMingwOut = new System.Windows.Forms.Panel();
             this.lblMingwOut = new System.Windows.Forms.Label();
             this.fbdSelect = new System.Windows.Forms.FolderBrowserDialog();
             this.tlpMain.SuspendLayout();
             this.tlpMinGW.SuspendLayout();
             this.tlpManual.SuspendLayout();
             this.cmsSelect.SuspendLayout();
+            this.pnlManOut.SuspendLayout();
+            this.pnlMingwOut.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMain
             // 
+            this.tlpMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tlpMain.ColumnCount = 2;
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -73,16 +77,16 @@
             this.tlpMain.Controls.Add(this.lblMinGW, 1, 0);
             this.tlpMain.Controls.Add(this.lblManual, 0, 0);
             this.tlpMain.Controls.Add(this.tlpManual, 0, 1);
-            this.tlpMain.Controls.Add(this.lblManOut, 0, 2);
-            this.tlpMain.Controls.Add(this.lblMingwOut, 1, 2);
+            this.tlpMain.Controls.Add(this.pnlManOut, 0, 2);
+            this.tlpMain.Controls.Add(this.pnlMingwOut, 1, 2);
             this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMain.Location = new System.Drawing.Point(0, 0);
             this.tlpMain.Name = "tlpMain";
             this.tlpMain.RowCount = 3;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 251F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpMain.Size = new System.Drawing.Size(505, 311);
+            this.tlpMain.Size = new System.Drawing.Size(505, 400);
             this.tlpMain.TabIndex = 0;
             // 
             // tlpMinGW
@@ -90,7 +94,6 @@
             this.tlpMinGW.ColumnCount = 1;
             this.tlpMinGW.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMinGW.Controls.Add(this.btnOpen, 0, 1);
-            this.tlpMinGW.Controls.Add(this.lblOpen, 0, 0);
             this.tlpMinGW.Controls.Add(this.lblSyntaxGW, 0, 4);
             this.tlpMinGW.Controls.Add(this.txtbxSyntaxGW, 0, 5);
             this.tlpMinGW.Controls.Add(this.btnGo, 0, 6);
@@ -107,7 +110,8 @@
             this.tlpMinGW.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpMinGW.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tlpMinGW.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tlpMinGW.Size = new System.Drawing.Size(247, 252);
+            this.tlpMinGW.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMinGW.Size = new System.Drawing.Size(247, 245);
             this.tlpMinGW.TabIndex = 3;
             // 
             // btnOpen
@@ -117,27 +121,16 @@
             this.btnOpen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnOpen.Location = new System.Drawing.Point(3, 23);
             this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(241, 110);
+            this.btnOpen.Size = new System.Drawing.Size(241, 103);
             this.btnOpen.TabIndex = 9;
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
-            // 
-            // lblOpen
-            // 
-            this.lblOpen.AutoSize = true;
-            this.lblOpen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblOpen.Location = new System.Drawing.Point(3, 0);
-            this.lblOpen.Name = "lblOpen";
-            this.lblOpen.Size = new System.Drawing.Size(241, 20);
-            this.lblOpen.TabIndex = 1;
-            this.lblOpen.Text = "To use MinGW toolkit first select";
-            this.lblOpen.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblSyntaxGW
             // 
             this.lblSyntaxGW.AutoSize = true;
             this.lblSyntaxGW.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSyntaxGW.Location = new System.Drawing.Point(3, 179);
+            this.lblSyntaxGW.Location = new System.Drawing.Point(3, 172);
             this.lblSyntaxGW.Name = "lblSyntaxGW";
             this.lblSyntaxGW.Size = new System.Drawing.Size(241, 20);
             this.lblSyntaxGW.TabIndex = 2;
@@ -147,7 +140,7 @@
             // txtbxSyntaxGW
             // 
             this.txtbxSyntaxGW.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtbxSyntaxGW.Location = new System.Drawing.Point(3, 202);
+            this.txtbxSyntaxGW.Location = new System.Drawing.Point(3, 195);
             this.txtbxSyntaxGW.Name = "txtbxSyntaxGW";
             this.txtbxSyntaxGW.Size = new System.Drawing.Size(241, 20);
             this.txtbxSyntaxGW.TabIndex = 0;
@@ -155,7 +148,7 @@
             // btnGo
             // 
             this.btnGo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGo.Location = new System.Drawing.Point(3, 225);
+            this.btnGo.Location = new System.Drawing.Point(3, 218);
             this.btnGo.Name = "btnGo";
             this.btnGo.Size = new System.Drawing.Size(241, 24);
             this.btnGo.TabIndex = 8;
@@ -167,7 +160,7 @@
             // 
             this.lblNameGW.AutoSize = true;
             this.lblNameGW.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNameGW.Location = new System.Drawing.Point(3, 136);
+            this.lblNameGW.Location = new System.Drawing.Point(3, 129);
             this.lblNameGW.Name = "lblNameGW";
             this.lblNameGW.Size = new System.Drawing.Size(241, 20);
             this.lblNameGW.TabIndex = 10;
@@ -177,7 +170,7 @@
             // txtbxNameGW
             // 
             this.txtbxNameGW.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtbxNameGW.Location = new System.Drawing.Point(3, 159);
+            this.txtbxNameGW.Location = new System.Drawing.Point(3, 152);
             this.txtbxNameGW.Name = "txtbxNameGW";
             this.txtbxNameGW.Size = new System.Drawing.Size(241, 20);
             this.txtbxNameGW.TabIndex = 11;
@@ -233,13 +226,13 @@
             this.tlpManual.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tlpManual.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tlpManual.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpManual.Size = new System.Drawing.Size(246, 252);
+            this.tlpManual.Size = new System.Drawing.Size(246, 245);
             this.tlpManual.TabIndex = 2;
             // 
             // txtbxSyntax
             // 
             this.txtbxSyntax.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtbxSyntax.Location = new System.Drawing.Point(3, 228);
+            this.txtbxSyntax.Location = new System.Drawing.Point(3, 219);
             this.txtbxSyntax.Name = "txtbxSyntax";
             this.txtbxSyntax.Size = new System.Drawing.Size(240, 20);
             this.txtbxSyntax.TabIndex = 9;
@@ -248,7 +241,7 @@
             // 
             this.txtbxLib.ContextMenuStrip = this.cmsSelect;
             this.txtbxLib.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtbxLib.Location = new System.Drawing.Point(3, 178);
+            this.txtbxLib.Location = new System.Drawing.Point(3, 171);
             this.txtbxLib.Name = "txtbxLib";
             this.txtbxLib.Size = new System.Drawing.Size(240, 20);
             this.txtbxLib.TabIndex = 8;
@@ -279,7 +272,7 @@
             // 
             this.txtbxBin.ContextMenuStrip = this.cmsSelect;
             this.txtbxBin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtbxBin.Location = new System.Drawing.Point(3, 128);
+            this.txtbxBin.Location = new System.Drawing.Point(3, 123);
             this.txtbxBin.Name = "txtbxBin";
             this.txtbxBin.Size = new System.Drawing.Size(240, 20);
             this.txtbxBin.TabIndex = 7;
@@ -288,7 +281,7 @@
             // 
             this.txtbxInc.ContextMenuStrip = this.cmsSelect;
             this.txtbxInc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtbxInc.Location = new System.Drawing.Point(3, 78);
+            this.txtbxInc.Location = new System.Drawing.Point(3, 75);
             this.txtbxInc.Name = "txtbxInc";
             this.txtbxInc.Size = new System.Drawing.Size(240, 20);
             this.txtbxInc.TabIndex = 6;
@@ -298,9 +291,9 @@
             this.lblInc.AutoSize = true;
             this.lblInc.BackColor = System.Drawing.Color.Transparent;
             this.lblInc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblInc.Location = new System.Drawing.Point(3, 50);
+            this.lblInc.Location = new System.Drawing.Point(3, 48);
             this.lblInc.Name = "lblInc";
-            this.lblInc.Size = new System.Drawing.Size(240, 25);
+            this.lblInc.Size = new System.Drawing.Size(240, 24);
             this.lblInc.TabIndex = 2;
             this.lblInc.Text = "Include Folder Location:";
             this.lblInc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -311,7 +304,7 @@
             this.lblName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblName.Location = new System.Drawing.Point(3, 0);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(240, 25);
+            this.lblName.Size = new System.Drawing.Size(240, 24);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "Library Name:";
             this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -320,9 +313,9 @@
             // 
             this.lblBin.AutoSize = true;
             this.lblBin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblBin.Location = new System.Drawing.Point(3, 100);
+            this.lblBin.Location = new System.Drawing.Point(3, 96);
             this.lblBin.Name = "lblBin";
-            this.lblBin.Size = new System.Drawing.Size(240, 25);
+            this.lblBin.Size = new System.Drawing.Size(240, 24);
             this.lblBin.TabIndex = 1;
             this.lblBin.Text = "Bin Folder Location:";
             this.lblBin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -331,9 +324,9 @@
             // 
             this.lblLib.AutoSize = true;
             this.lblLib.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLib.Location = new System.Drawing.Point(3, 150);
+            this.lblLib.Location = new System.Drawing.Point(3, 144);
             this.lblLib.Name = "lblLib";
-            this.lblLib.Size = new System.Drawing.Size(240, 25);
+            this.lblLib.Size = new System.Drawing.Size(240, 24);
             this.lblLib.TabIndex = 3;
             this.lblLib.Text = "Library Folder Location:";
             this.lblLib.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -342,9 +335,9 @@
             // 
             this.lblSyntax.AutoSize = true;
             this.lblSyntax.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSyntax.Location = new System.Drawing.Point(3, 200);
+            this.lblSyntax.Location = new System.Drawing.Point(3, 192);
             this.lblSyntax.Name = "lblSyntax";
-            this.lblSyntax.Size = new System.Drawing.Size(240, 25);
+            this.lblSyntax.Size = new System.Drawing.Size(240, 24);
             this.lblSyntax.TabIndex = 4;
             this.lblSyntax.Text = "Syntax (e.g  - lSDL2main , Must contain \"-\")";
             this.lblSyntax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -352,28 +345,51 @@
             // txtbxName
             // 
             this.txtbxName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtbxName.Location = new System.Drawing.Point(3, 28);
+            this.txtbxName.Location = new System.Drawing.Point(3, 27);
             this.txtbxName.Name = "txtbxName";
             this.txtbxName.Size = new System.Drawing.Size(240, 20);
             this.txtbxName.TabIndex = 5;
+            // 
+            // pnlManOut
+            // 
+            this.pnlManOut.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlManOut.Controls.Add(this.lblManOut);
+            this.pnlManOut.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlManOut.Location = new System.Drawing.Point(3, 294);
+            this.pnlManOut.Name = "pnlManOut";
+            this.pnlManOut.Size = new System.Drawing.Size(246, 103);
+            this.pnlManOut.TabIndex = 4;
             // 
             // lblManOut
             // 
             this.lblManOut.AutoSize = true;
             this.lblManOut.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblManOut.Location = new System.Drawing.Point(3, 298);
+            this.lblManOut.Location = new System.Drawing.Point(0, 0);
             this.lblManOut.Name = "lblManOut";
-            this.lblManOut.Size = new System.Drawing.Size(246, 13);
-            this.lblManOut.TabIndex = 4;
+            this.lblManOut.Size = new System.Drawing.Size(160, 13);
+            this.lblManOut.TabIndex = 1;
+            this.lblManOut.Text = "To use MinGW toolkit first select";
+            this.lblManOut.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pnlMingwOut
+            // 
+            this.pnlMingwOut.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlMingwOut.Controls.Add(this.lblMingwOut);
+            this.pnlMingwOut.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMingwOut.Location = new System.Drawing.Point(255, 294);
+            this.pnlMingwOut.Name = "pnlMingwOut";
+            this.pnlMingwOut.Size = new System.Drawing.Size(247, 103);
+            this.pnlMingwOut.TabIndex = 5;
             // 
             // lblMingwOut
             // 
             this.lblMingwOut.AutoSize = true;
             this.lblMingwOut.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMingwOut.Location = new System.Drawing.Point(255, 298);
+            this.lblMingwOut.Location = new System.Drawing.Point(0, 0);
             this.lblMingwOut.Name = "lblMingwOut";
-            this.lblMingwOut.Size = new System.Drawing.Size(247, 13);
-            this.lblMingwOut.TabIndex = 5;
+            this.lblMingwOut.Size = new System.Drawing.Size(112, 13);
+            this.lblMingwOut.TabIndex = 0;
+            this.lblMingwOut.Text = "MinGW Library Output";
             // 
             // fbdSelect
             // 
@@ -383,7 +399,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(505, 311);
+            this.ClientSize = new System.Drawing.Size(505, 400);
             this.Controls.Add(this.tlpMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(521, 350);
@@ -397,6 +413,10 @@
             this.tlpManual.ResumeLayout(false);
             this.tlpManual.PerformLayout();
             this.cmsSelect.ResumeLayout(false);
+            this.pnlManOut.ResumeLayout(false);
+            this.pnlManOut.PerformLayout();
+            this.pnlMingwOut.ResumeLayout(false);
+            this.pnlMingwOut.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -408,7 +428,7 @@
         private System.Windows.Forms.Label lblMinGW;
         private System.Windows.Forms.TableLayoutPanel tlpManual;
         private System.Windows.Forms.TableLayoutPanel tlpMinGW;
-        private System.Windows.Forms.Label lblOpen;
+        private System.Windows.Forms.Label lblManOut;
         private System.Windows.Forms.Label lblSyntaxGW;
         private System.Windows.Forms.TextBox txtbxSyntaxGW;
         private System.Windows.Forms.Button btnGo;
@@ -429,7 +449,8 @@
         private System.Windows.Forms.FolderBrowserDialog fbdSelect;
         private System.Windows.Forms.Label lblNameGW;
         private System.Windows.Forms.TextBox txtbxNameGW;
-        private System.Windows.Forms.Label lblManOut;
+        private System.Windows.Forms.Panel pnlManOut;
+        private System.Windows.Forms.Panel pnlMingwOut;
         private System.Windows.Forms.Label lblMingwOut;
     }
 }

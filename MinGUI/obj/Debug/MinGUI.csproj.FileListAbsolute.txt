@@ -12,7 +12,6 @@ P:\C#\MinGUI\MinGUI\bin\Debug\MinGUI.exe.config
 P:\C#\MinGUI\MinGUI\bin\Debug\MinGUI.exe
 P:\C#\MinGUI\MinGUI\bin\Debug\MinGUI.pdb
 P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.csprojResolveAssemblyReference.cache
-P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmMain.resources
 P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.Properties.Resources.resources
 P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.csproj.GenerateResource.Cache
 P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.csproj.CoreCompileInputs.cache
@@ -24,3 +23,4 @@ C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmAddLib.
 C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.csproj.CopyComplete
 P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmAddLib.resources
 P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.csproj.CopyComplete
+P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmMain.resources
