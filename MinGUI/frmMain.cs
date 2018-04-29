@@ -77,6 +77,8 @@ namespace MinGUI
     {
         public class lib
         {
+            public int libID { get; set; }
+            public string libName { get; set; }
             public string libSyntax { get; set; }
             public bool libState { get; set; }
         }
@@ -111,7 +113,7 @@ namespace MinGUI
                 flpChkBxLib.Controls.Add(EventToCB(new CheckBox
                 {
                     Text = readRecords[1].ToString(),
-                    Tag = readRecords[2].ToString(),
+                    Tag = readRecords[0].ToString(),
                     Anchor = AnchorStyles.Left & AnchorStyles.Right,
                 }));
             }
@@ -157,45 +159,38 @@ namespace MinGUI
             compile = pnlCompile.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Tag.ToString() + " ";
             name = "\"" + txtbxFileName.Text + "\" ";
             path = "\"" + txtbxFilePath.Text + "\" ";
-            foreach (lib lib in libs)
+            foreach (lib lib in libs.Where(x => x.libState == true))
             {
                 libList += lib.libSyntax + " ".ToString();
             }
-            /*
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = "/C copy /b Image1.jpg + Archive.rar Image2.jpg";
-            process.StartInfo = startInfo;
-            process.Start();
-            */
             lblOutput.Text = "All required information is present, making command...";
-
-            lblOutput.Text += "\nCommand is: " + cmdInfo.Arguments.ToString() + "\nCommand made, executing...";
             cmdInfo.FileName = "cmd.exe";
-            //cmdInfo.Arguments = compile + name + path + libList;// + " && pause";
-            cmdInfo.Arguments = "ls";
-            
+            cmdInfo.Arguments = "/C " + compiler + compile + name + path + libList;
             cmd.StartInfo = cmdInfo;
+            lblOutput.Text += "\nCommand is: " + cmdInfo.Arguments.ToString() + "\nCommand made, executing...";
             cmd.Start();
         }
 
         public CheckBox EventToCB(CheckBox cb)
         {
+            SQLiteCommand getLib = new SQLiteCommand("SELECT * FROM Libraries WHERE libID = \"" + cb.Tag.ToString() + "\";", conn);
+            SQLiteDataReader readGetLib = getLib.ExecuteReader();
+            while (readGetLib.Read())
+            {
+                libs.Add(new lib { libID = Int32.Parse(readGetLib[0].ToString()), libName = readGetLib[1].ToString(), libSyntax = readGetLib[2].ToString(), libState = false });
+            }
             void method()
             {
-                MessageBox.Show(cb.CheckState.ToString());
                 if (cb.Checked)
                 {
-                    libs.Add(new lib { libSyntax = cb.Tag.ToString(), libState = true });
-                    
+                    i = libs.FindIndex(x => x.libSyntax.Equals(cb.Tag.ToString()));
+                    libs[i].libState = true;
+
                 }
                 else if (!cb.Checked)
                 {
                     i = libs.FindIndex(x => x.libSyntax.Equals(cb.Tag.ToString()));
-                    libs.RemoveAt(i);
-                    MessageBox.Show(cb.Tag.ToString() + " " + libs.Count.ToString());
+                    libs[i].libState = false;
                 }
                 else
                 {
@@ -211,7 +206,7 @@ namespace MinGUI
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             temp = cmsLib.SourceControl.Tag.ToString();
-            SQLiteCommand nonQuery = new SQLiteCommand("DELETE FROM Libraries WHERE libSyntax = \"" + temp + "\";", conn);
+            SQLiteCommand nonQuery = new SQLiteCommand("DELETE FROM Libraries WHERE libID = " + temp + ";", conn);
             nonQuery.ExecuteNonQuery();
             flpChkBxLib.Controls.Clear();
             refreshLibs();
@@ -219,8 +214,24 @@ namespace MinGUI
 
         private void tRefresh_Tick(object sender, EventArgs e)
         {
-            this.flpChkBxLib.Controls.Clear();
-            refreshLibs();
+            List<lib> newLibs = new List<lib>();
+            SQLiteCommand getLibs = new SQLiteCommand("SELECT * FROM Libraries", conn);
+            SQLiteDataReader readGetLibs = getLibs.ExecuteReader();
+            while (readGetLibs.Read())
+            {
+                int y = libs.FindIndex(x => x.libID == Int32.Parse(readGetLibs[0].ToString()));
+                if (y >= 0) { }
+                else
+                {
+                    flpChkBxLib.Controls.Add(EventToCB(new CheckBox
+                    {
+                        Text = readGetLibs[1].ToString(),
+                        Tag = readGetLibs[0].ToString(),
+                        Anchor = AnchorStyles.Left & AnchorStyles.Right,
+                    }));
+                }
+            }
+        
         }
 
         private void selectFolderToolStripMenuItem_Click(object sender, EventArgs e)

@@ -32,7 +32,6 @@ namespace MinGUI
             conn.Open();
             procInfo.WindowStyle = ProcessWindowStyle.Normal;
             this.Focus();
-
         }
 
         private void btnOpen_Click(object sender, EventArgs e)

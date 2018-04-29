@@ -92,13 +92,13 @@
             this.cmsName.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectFolderToolStripMenuItem});
             this.cmsName.Name = "cmsFile";
-            this.cmsName.Size = new System.Drawing.Size(142, 26);
+            this.cmsName.Size = new System.Drawing.Size(112, 26);
             // 
             // selectFolderToolStripMenuItem
             // 
             this.selectFolderToolStripMenuItem.Name = "selectFolderToolStripMenuItem";
-            this.selectFolderToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.selectFolderToolStripMenuItem.Text = "Select Folder";
+            this.selectFolderToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.selectFolderToolStripMenuItem.Text = "Set File";
             this.selectFolderToolStripMenuItem.Click += new System.EventHandler(this.selectFolderToolStripMenuItem_Click);
             // 
             // cmsFile
@@ -373,7 +373,7 @@
             // tRefresh
             // 
             this.tRefresh.Enabled = true;
-            this.tRefresh.Interval = 10000;
+            this.tRefresh.Interval = 3000;
             this.tRefresh.Tick += new System.EventHandler(this.tRefresh_Tick);
             // 
             // sfdName
