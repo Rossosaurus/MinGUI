@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
-//compile sdltest:
 /* Usage: gcc [options] file...
 Options:
   -pass-exit-codes         Exit with highest error code from a phase.
@@ -118,7 +117,13 @@ namespace MinGUI
                 }));
             }
         }
-
+        
+        public Panel LibraryItem()
+        {
+            TextBox Number = new TextBox();
+            Label libName = new Label();
+        }
+        
         private void frmMain_Load(object sender, EventArgs e)
         {
             conn.Open();
@@ -154,7 +159,6 @@ namespace MinGUI
                 lblOutput.Text = "One of the inputs is either incorrect or empty";
                 return;
             }
-            //gcc -o test.exe "C++\SDLTest.cpp" -lmingw32 -lSDL2main -lSDL2
             compiler = cbCompiler.Text + " ";
             compile = pnlCompile.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Tag.ToString() + " ";
             name = "\"" + txtbxFileName.Text + "\" ";
