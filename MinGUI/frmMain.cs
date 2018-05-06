@@ -63,12 +63,7 @@ Options:
   -x <language>            Specify the language of the following input files.
                            Permissible languages include: c c++ assembler none
                            'none' means revert to the default behavior of
-                           guessing the language based on the file's extension.
-
-Options starting with -g, -f, -m, -O, -W, or --param are automatically
- passed on to the various sub-processes invoked by gcc.  In order to pass
- other options on to these processes the -W<letter> options must be used.
-*/
+                           guessing the language based on the file's extension.*/
 
 namespace MinGUI
 {
@@ -85,6 +80,7 @@ namespace MinGUI
         string compile;
         string temp;
         int i;
+        bool error = false;
 
         public class lib
         {
@@ -113,6 +109,8 @@ namespace MinGUI
             tlp.Height = 30;
             tlp.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tlp.Anchor = AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Top;
+            tlp.ContextMenuStrip = cmsLib;
+            tlp.Tag = tag;
 
             MaskedTextBox tb = new MaskedTextBox();
             tb.Mask = "09";
@@ -135,7 +133,15 @@ namespace MinGUI
                 {
                     libs[i].libOrder = Int32.Parse(tb.Text);
                 }
-                MessageBox.Show(libs[i].libOrder.ToString());
+                try
+                {
+                    if (libs.FindIndex(x => x.libOrder == Int32.Parse(tb.Text)) > 0)
+                    {
+                        error = true;
+                        lblOutput.Text = "One of the libraries selected has the same order number as another";
+                    }
+                }
+                catch { }                
             }
 
             tb.TextChanged += (s, e) => textChanged();
@@ -195,7 +201,6 @@ namespace MinGUI
                 lblOutput.Text = "One of the inputs is either incorrect or empty";
                 return;
             }
-            //gcc -o test.exe "C++\SDLTest.cpp" -lmingw32 -lSDL2main -lSDL2
             compiler = cbCompiler.Text + " ";
             compile = pnlCompile.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Tag.ToString() + " ";
             name = "\"" + txtbxFileName.Text + "\" ";
@@ -209,17 +214,34 @@ namespace MinGUI
             cmdInfo.Arguments = "/C " + compiler + compile + name + path + libList;
             cmd.StartInfo = cmdInfo;
             lblOutput.Text += "\nCommand is: " + cmdInfo.Arguments.ToString() + "\nCommand made, executing...";
-            cmd.Start();
+            if (!error)
+            {
+                cmd.Start();
+            }
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            temp = cmsLib.SourceControl.Tag.ToString();
+            SQLiteCommand nonQuery = new SQLiteCommand("DELETE FROM Libraries WHERE libID = " + temp + ";", conn);
+            nonQuery.ExecuteNonQuery();
+            cmsLib.SourceControl.Dispose();
         }
 
         private void tRefresh_Tick(object sender, EventArgs e)
         {
-
+            List<lib> newLibs = new List<lib>();
+            SQLiteCommand getLibs = new SQLiteCommand("SELECT * FROM Libraries", conn);
+            SQLiteDataReader readGetLibs = getLibs.ExecuteReader();
+            while (readGetLibs.Read())
+            {
+                int y = libs.FindIndex(x => x.libID == Int32.Parse(readGetLibs[0].ToString()));
+                if (y >= 0) { }
+                else
+                {
+                    flpChkBxLib.Controls.Add(OrderedListItem(readGetLibs[0].ToString(), readGetLibs[1].ToString()));
+                }
+            }
         }
 
         private void selectFolderToolStripMenuItem_Click(object sender, EventArgs e)
