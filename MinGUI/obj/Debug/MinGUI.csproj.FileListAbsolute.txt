@@ -24,3 +24,11 @@ C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.csproj.Cop
 P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmAddLib.resources
 P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.csproj.CopyComplete
 P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmMain.resources
+P:\C#\MinGUI\MinGUI\Build\MinGUI.exe.config
+P:\C#\MinGUI\MinGUI\Build\MinGUI.exe
+P:\C#\MinGUI\MinGUI\Build\MinGUI.pdb
+P:\C#\MinGUI\MinGUI\Build\System.Data.SQLite.dll
+C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\Build\MinGUI.exe.config
+C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\Build\MinGUI.exe
+C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\Build\MinGUI.pdb
+C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\Build\System.Data.SQLite.dll

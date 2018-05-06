@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<package id="manifest-0-031-9454-b2ed18">
+    <release tarname="mpfr-3.1.5-2-mingw32-dev.tar.xz" />
+    <references>
+        <sysroot id="sysroot-0-002-a7c6-d7dbb5" />
+    </references>
+    <manifest>
+        <file path="include/mpf2mpfr.h" />
+        <file path="include/mpfr.h" />
+        <file path="lib/libmpfr.a" />
+        <file path="lib/libmpfr.dll.a" />
+    </manifest>
+</package>

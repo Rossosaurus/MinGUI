@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<package id="manifest-0-030-7386-2b7b44">
+    <release tarname="mpc-1.0.3-1-mingw32-dev.tar.xz" />
+    <references>
+        <sysroot id="sysroot-0-002-a7c6-d7dbb5" />
+    </references>
+    <manifest>
+        <file path="include/mpc.h" />
+        <file path="lib/libmpc.a" />
+        <file path="lib/libmpc.dll.a" />
+    </manifest>
+</package>

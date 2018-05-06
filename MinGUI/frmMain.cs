@@ -74,14 +74,6 @@ namespace MinGUI
 {
     public partial class frmMain : Form
     {
-        public class lib
-        {
-            public int libID { get; set; }
-            public string libName { get; set; }
-            public string libSyntax { get; set; }
-            public bool libState { get; set; }
-        }
-
         frmAddLib addLib = new frmAddLib();
         Process cmd = new Process();        
         ProcessStartInfo cmdInfo = new ProcessStartInfo();
@@ -91,9 +83,16 @@ namespace MinGUI
         string name;
         string compiler;
         string compile;
-        string cmdStr;
         string temp;
         int i;
+
+        public class lib
+        {
+            public int libID { get; set; }
+            public string libName { get; set; }
+            public string libSyntax { get; set; }
+            public int? libOrder { get; set; }
+        }
 
         List<lib> libs = new List<lib>();
         string libList = "";
@@ -103,33 +102,70 @@ namespace MinGUI
             InitializeComponent();
         }
 
-        public void refreshLibs()
+        public TableLayoutPanel OrderedListItem( string tag, string text)
         {
-            SQLiteCommand Records = new SQLiteCommand("SELECT * FROM Libraries", conn);
-            SQLiteDataReader readRecords = Records.ExecuteReader();
-            while (readRecords.Read())
+            TableLayoutPanel tlp = new TableLayoutPanel();
+            tlp.RowCount = 1;
+            tlp.ColumnCount = 2;
+            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 30));
+            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            tlp.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tlp.Height = 30;
+            tlp.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            tlp.Anchor = AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Top;
+
+            MaskedTextBox tb = new MaskedTextBox();
+            tb.Mask = "09";
+            tb.Dock = DockStyle.Fill;
+            tb.Tag = tag;
+
+            Label lbl = new Label();
+            lbl.AutoSize = false;
+            lbl.Dock = DockStyle.Fill;
+            lbl.Text = text;
+
+            void textChanged()
             {
-                flpChkBxLib.Controls.Add(EventToCB(new CheckBox
+                int i = libs.FindIndex(x => x.libID == Int32.Parse(tb.Tag.ToString()));
+                if (string.IsNullOrWhiteSpace(tb.Text))
                 {
-                    Text = readRecords[1].ToString(),
-                    Tag = readRecords[0].ToString(),
-                    Anchor = AnchorStyles.Left & AnchorStyles.Right,
-                }));
+                    libs[i].libOrder = null;
+                }
+                else
+                {
+                    libs[i].libOrder = Int32.Parse(tb.Text);
+                }
+                MessageBox.Show(libs[i].libOrder.ToString());
             }
+
+            tb.TextChanged += (s, e) => textChanged();
+
+            tlp.Controls.Add(tb, 0, 0);
+            tlp.Controls.Add(lbl, 1, 0);
+            return tlp;
         }
-        
-        public Panel LibraryItem()
-        {
-            TextBox Number = new TextBox();
-            Label libName = new Label();
-        }
-        
+
         private void frmMain_Load(object sender, EventArgs e)
         {
+            if (!File.Exists("mingui.db"))
+            {
+                SQLiteConnection.CreateFile("mingui.db");
+            }
             conn.Open();
             SQLiteCommand createLibraries = new SQLiteCommand("CREATE TABLE IF NOT EXISTS `Libraries` (`libID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `libName` TEXT NOT NULL, `libSyntax`	TEXT NOT NULL); ", conn);
             createLibraries.ExecuteNonQuery();
-            refreshLibs();
+            SQLiteCommand getLibs = new SQLiteCommand("SELECT * FROM Libraries", conn);
+            SQLiteDataReader readLibs = getLibs.ExecuteReader();
+            while (readLibs.Read())
+            {
+                libs.Add(new lib
+                {
+                    libID = Int32.Parse(readLibs[0].ToString()),
+                    libName = readLibs[1].ToString(),
+                    libSyntax = readLibs[2].ToString()
+                });
+                flpChkBxLib.Controls.Add(OrderedListItem(readLibs[0].ToString(), readLibs[1].ToString()));
+            }
         }
 
         private void btnAddLib_Click(object sender, EventArgs e)
@@ -159,11 +195,12 @@ namespace MinGUI
                 lblOutput.Text = "One of the inputs is either incorrect or empty";
                 return;
             }
+            //gcc -o test.exe "C++\SDLTest.cpp" -lmingw32 -lSDL2main -lSDL2
             compiler = cbCompiler.Text + " ";
             compile = pnlCompile.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Tag.ToString() + " ";
             name = "\"" + txtbxFileName.Text + "\" ";
             path = "\"" + txtbxFilePath.Text + "\" ";
-            foreach (lib lib in libs.Where(x => x.libState == true))
+            foreach (lib lib in libs.Where(x => x.libOrder != null).OrderBy(x => x.libOrder))
             {
                 libList += lib.libSyntax + " ".ToString();
             }
@@ -175,67 +212,14 @@ namespace MinGUI
             cmd.Start();
         }
 
-        public CheckBox EventToCB(CheckBox cb)
-        {
-            SQLiteCommand getLib = new SQLiteCommand("SELECT * FROM Libraries WHERE libID = \"" + cb.Tag.ToString() + "\";", conn);
-            SQLiteDataReader readGetLib = getLib.ExecuteReader();
-            while (readGetLib.Read())
-            {
-                libs.Add(new lib { libID = Int32.Parse(readGetLib[0].ToString()), libName = readGetLib[1].ToString(), libSyntax = readGetLib[2].ToString(), libState = false });
-            }
-            void method()
-            {
-                if (cb.Checked)
-                {
-                    i = libs.FindIndex(x => x.libSyntax.Equals(cb.Tag.ToString()));
-                    libs[i].libState = true;
-
-                }
-                else if (!cb.Checked)
-                {
-                    i = libs.FindIndex(x => x.libSyntax.Equals(cb.Tag.ToString()));
-                    libs[i].libState = false;
-                }
-                else
-                {
-                    MessageBox.Show("Somethings screwed, please submit a bug report at www.github.co.uk/Rossosaurus/MinGUI.");
-                }
-
-            }
-            cb.CheckedChanged += (s, e) => method();
-            cb.ContextMenuStrip = cmsLib;
-            return cb;
-        }
-
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            temp = cmsLib.SourceControl.Tag.ToString();
-            SQLiteCommand nonQuery = new SQLiteCommand("DELETE FROM Libraries WHERE libID = " + temp + ";", conn);
-            nonQuery.ExecuteNonQuery();
-            flpChkBxLib.Controls.Clear();
-            refreshLibs();
+
         }
 
         private void tRefresh_Tick(object sender, EventArgs e)
         {
-            List<lib> newLibs = new List<lib>();
-            SQLiteCommand getLibs = new SQLiteCommand("SELECT * FROM Libraries", conn);
-            SQLiteDataReader readGetLibs = getLibs.ExecuteReader();
-            while (readGetLibs.Read())
-            {
-                int y = libs.FindIndex(x => x.libID == Int32.Parse(readGetLibs[0].ToString()));
-                if (y >= 0) { }
-                else
-                {
-                    flpChkBxLib.Controls.Add(EventToCB(new CheckBox
-                    {
-                        Text = readGetLibs[1].ToString(),
-                        Tag = readGetLibs[0].ToString(),
-                        Anchor = AnchorStyles.Left & AnchorStyles.Right,
-                    }));
-                }
-            }
-        
+
         }
 
         private void selectFolderToolStripMenuItem_Click(object sender, EventArgs e)
