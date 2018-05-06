@@ -8,7 +8,7 @@
 ##### 2. Right click or enter the location including file name of the exe that will be output to
 ##### 3. Select gcc (the only compiler from the drop down box)
 ##### 4. Select which method you wish to build the source with, currently "Build and Output to exe" is the only fullproof method
-##### 5. Select the desired libraries that you wish to use
+##### 5. Select the desired libraries that you wish to use by entering a number corresponding to the order you wish them to be in when creating the compile string
 ##### 6. Select Build and an executable of your source should be output to the chosen location.
 #
 #### To add a library:
