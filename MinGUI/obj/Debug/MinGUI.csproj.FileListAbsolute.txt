@@ -7,7 +7,6 @@ C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.csproj.Cor
 C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.exe
 C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.pdb
 C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.csprojResolveAssemblyReference.cache
-C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmMain.resources
 P:\C#\MinGUI\MinGUI\bin\Debug\MinGUI.exe.config
 P:\C#\MinGUI\MinGUI\bin\Debug\MinGUI.exe
 P:\C#\MinGUI\MinGUI\bin\Debug\MinGUI.pdb
@@ -32,3 +31,9 @@ C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\Build\MinGUI.exe.config
 C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\Build\MinGUI.exe
 C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\Build\MinGUI.pdb
 C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\Build\System.Data.SQLite.dll
+P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmMainNew.resources
+C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmMainNew.resources
+C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmPreset.resources
+P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmPreset.resources
+P:\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmSettings.resources
+C:\Users\Ross\Documents\Programming\C#\MinGUI\MinGUI\obj\Debug\MinGUI.frmSettings.resources

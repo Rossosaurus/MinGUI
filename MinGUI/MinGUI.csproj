@@ -75,6 +75,18 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmPreset.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPreset.Designer.cs">
+      <DependentUpon>frmPreset.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSettings.Designer.cs">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmAddLib.resx">
@@ -83,20 +95,26 @@
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmPreset.resx">
+      <DependentUpon>frmPreset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSettings.resx">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -126,6 +144,66 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\iconNew.fw.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon%28Big%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SettingsHover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SettingsDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SettingsHover1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\presets.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\presetsDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\presetsHover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\presetsUnselected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\presetsUnselectedHover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tabLibUnselected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tabLibUnselectedHover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tabLib.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tabLibDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tabLibHover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tabLibUnselectedHover1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\presetsUnselectedHover1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ribbon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

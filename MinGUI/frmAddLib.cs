@@ -15,11 +15,9 @@ namespace MinGUI
 {
     public partial class frmAddLib : Form
     {
-        bool oops = true;
-        bool mingw = false;
         SQLiteConnection conn = new SQLiteConnection("Data Source = mingui.db; Version=3;");
         Process proc = new Process();
-        ProcessStartInfo procInfo = new ProcessStartInfo();
+        ProcessStartInfo procInfo = new ProcessStartInfo() { FileName = "cmd.exe", WindowStyle = ProcessWindowStyle.Minimized };
 
         public frmAddLib()
         {
@@ -34,101 +32,41 @@ namespace MinGUI
             this.Focus();
         }
 
-        private void btnOpen_Click(object sender, EventArgs e)
-        {
-            mingw = true;
-            procInfo.FileName = "MinGW\\bin\\mingw-get.exe";
-            proc.StartInfo = procInfo;
-            proc.Start();
-            lblMingwOut.Text = "Opened MinGW config. Library can now be added to DB";
-        }
-
-        private void btnGo_Click(object sender, EventArgs e)
-        {
-            if ((txtbxName.Text != "" && txtbxSyntax.Text != "") && (txtbxSyntaxGW.Text == "" && txtbxNameGW.Text == ""))
-            {
-                oops = false;
-                if (txtbxBin.Text != "" && txtbxInc.Text != "" && txtbxLib.Text != "")
-                {
-                    if (Directory.Exists(txtbxBin.Text) && Directory.Exists(txtbxInc.Text) && Directory.Exists(txtbxLib.Text))
-                    {
-                        lblManOut.Text = "All folders exist\n \n";
-                        procInfo.FileName = "cmd.exe";
-                        string mvBinIncLib = "/C xcopy /Y /S \"" + txtbxBin.Text + "\" MinGW\\bin && " +
-                            "echo Bin folder successfully moved & xcopy /Y /S \"" + txtbxInc.Text + "\" MinGW\\include && " +
-                            "echo Include folder successfully moved & xcopy /Y /S \"" + txtbxLib.Text + "\" MinGW\\lib && " +
-                            "echo Lib folder successfully moved && echo. && " + 
-                            "echo All folders successfully moved";
-                        procInfo.Arguments = mvBinIncLib;
-                        procInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                        proc.StartInfo = procInfo;
-                        proc.Start();
-                        lblManOut.Text += "All files successfully moved";
-                        SQLiteCommand appendLib = new SQLiteCommand("INSERT INTO Libraries (libName, libSyntax) VALUES (\"" + txtbxName.Text + "\", \"" + txtbxSyntax.Text + "\");", conn);
-                        appendLib.ExecuteNonQuery();
-                        lblManOut.Text += "\n \n Entry in DB successfully Added";
-                        lblManOut.Text += "\n \n Success!";
-                    }
-                    else
-                    {
-                        lblManOut.Text = "Check performed to ensure library exists returned false:\n    Bin: " + (Directory.Exists(txtbxBin.Text) + "\n    Include: " + Directory.Exists(txtbxInc.Text) + "\n    Lib: " + Directory.Exists(txtbxLib.Text));
-                    }
-                }
-                else if (txtbxBin.Text == "" && txtbxInc.Text == "" && txtbxLib.Text == "")
-                {
-                    SQLiteCommand appendLib = new SQLiteCommand("INSERT INTO Libraries (libName, libSyntax) VALUES (\"" + txtbxName.Text.ToString() + "\", \"" + txtbxSyntax.Text.ToString() + "\");", conn);
-                    appendLib.ExecuteNonQuery();
-                }
-                else if (txtbxBin.Text == "" || txtbxInc.Text == "" || txtbxLib.Text == "")
-                {
-                    lblManOut.Text = "One of the directories required is empty";
-                }                
-                else
-                {
-                    MessageBox.Show("Something's fucked");
-                }
-
-            }
-            if ((txtbxSyntaxGW.Text != "" && txtbxNameGW.Text != "") && !(txtbxName.Text != "" && txtbxSyntax.Text != "" && txtbxLib.Text != "" && txtbxBin.Text != "" && txtbxInc.Text != ""))
-            {
-                oops = false;
-                if (mingw)
-                {
-                    SQLiteCommand addLib = new SQLiteCommand("INSERT INTO Libraries(libName, libSyntax) VALUES (\"" + txtbxNameGW.Text + "\", \"" + txtbxSyntaxGW.Text + "\");", conn);
-                    addLib.ExecuteNonQuery();
-                    lblMingwOut.Text += "\nLibrary successfully added to the database";
-                }
-                else
-                {
-                    MessageBox.Show("You need to click on the MinGW button first and install a library before you add this library. If you are simply trying to add a library fill in the file name and syntax inputs on the left.");
-
-                }
-            }
-            if (oops)
-            {
-                MessageBox.Show("Somthing went wrong, either you didn't fill in any inputs or didn't fill enough inputs or somethings screwed. If it's the latter and this error persists please post a bug on github.com/Rossosaurus/MinGUi");
-            }
-            else
-            {
-                this.Hide();
-            }
-        }
-
-        private void selectFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            fbdSelect.ShowDialog();
-            cmsSelect.SourceControl.Text = fbdSelect.SelectedPath;
-        }
-
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            cmsSelect.SourceControl.Text = "";
-        }
-
         private void frmAddLib_Close(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
             this.Hide();
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(tbBin.Text) && !string.IsNullOrWhiteSpace(tbInclude.Text) && !string.IsNullOrWhiteSpace(tbLib.Text) && !string.IsNullOrWhiteSpace(tbName.Text) && !string.IsNullOrWhiteSpace(tbSyntax.Text))
+            {
+                if (Directory.Exists(tbBin.Text.Replace("\\", "\\\\")) && Directory.Exists(tbInclude.Text.Replace("\\", "\\\\")) && Directory.Exists(tbLib.Text.Replace("\\", "\\\\")))
+                {
+                    rtbOut.Text += "Directories specified exists \n";
+                    procInfo.Arguments = "/C xcopy /e /y \"" + tbBin.Text.Replace("\\", "\\\\") + "MinGW\\";
+                    proc.StartInfo = procInfo;
+                    rtbOut.Text += "Bin folder copied\n";
+                    procInfo.Arguments = "/C xcopy /e /y \"" + tbInclude.Text.Replace("\\", "\\\\") + "MinGW\\";
+                    proc.StartInfo = procInfo;
+                    rtbOut.Text += "Include folder copied\n";
+                    procInfo.Arguments = "/C xcopy /e /y \"" + tbLib.Text.Replace("\\", "\\\\") + "MinGW\\";
+                    proc.StartInfo = procInfo;
+                    rtbOut.Text += "Lib folder copied\n";
+                    SQLiteCommand appendLib = new SQLiteCommand("INSERT INTO Libraries(libName, libSyntax) VALUES (\"" + tbName.Text + "\", \"" + tbSyntax + "\");");
+                    appendLib.ExecuteNonQuery();
+                    rtbOut.Text += "Entry added to DB";
+
+                }
+            }
+            else if (string.IsNullOrWhiteSpace(tbBin.Text) && string.IsNullOrWhiteSpace(tbInclude.Text) && string.IsNullOrWhiteSpace(tbLib.Text) && (!string.IsNullOrWhiteSpace(tbName.Text)) && (!string.IsNullOrWhiteSpace(tbSyntax.Text)))
+            {
+                SQLiteCommand appendLib = new SQLiteCommand("INSERT INTO Libraries(libName, libSyntax) VALUES (\"" + tbName.Text + "\", \"" + tbSyntax.Text + "\");", conn);
+                appendLib.ExecuteNonQuery();
+                rtbOut.Text = "Entry added to DB";
+            }
+            else { MessageBox.Show("Either All the inputs must be filled or ONLY the LAST 2 Inputs must be filled in order to add a library."); }
         }
     }
 }

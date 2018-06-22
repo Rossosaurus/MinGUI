@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
-/* Usage: gcc [options] file...
+namespace MinGUI
+{
+    /* Usage: gcc [options] file...
 Options:
   -pass-exit-codes         Exit with highest error code from a phase.
   --help                   Display this information.
@@ -65,15 +67,12 @@ Options:
                            'none' means revert to the default behavior of
                            guessing the language based on the file's extension.*/
 
-namespace MinGUI
-{
-    public partial class frmMain : Form
+    public partial class frmMainNew : Form
     {
-        frmAddLib addLib = new frmAddLib();
-        Process cmd = new Process();        
+        Process cmd = new Process();
         ProcessStartInfo cmdInfo = new ProcessStartInfo();
         SQLiteConnection conn = new SQLiteConnection("Data Source=mingui.db; Version=3;");
-        
+
         string path;
         string name;
         string compiler;
@@ -81,6 +80,7 @@ namespace MinGUI
         string temp;
         int i;
         bool error = false;
+        bool libChecked = true;
 
         public class lib
         {
@@ -89,16 +89,17 @@ namespace MinGUI
             public string libSyntax { get; set; }
             public int? libOrder { get; set; }
         }
-
+        public class preset
+        {
+            public int pID { get; set; }
+            public string pName { get; set; }
+            public string pSyntax { get; set; }
+        }
         List<lib> libs = new List<lib>();
+        List<preset> presets = new List<preset>();
         string libList = "";
 
-        public frmMain()
-        {
-            InitializeComponent();
-        }
-
-        public TableLayoutPanel OrderedListItem( string tag, string text)
+        public TableLayoutPanel OrderedListItem(string tag, string text)
         {
             TableLayoutPanel tlp = new TableLayoutPanel();
             tlp.RowCount = 1;
@@ -107,9 +108,9 @@ namespace MinGUI
             tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             tlp.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             tlp.Height = 30;
-            tlp.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            tlp.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
             tlp.Anchor = AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Top;
-            tlp.ContextMenuStrip = cmsLib;
+            tlp.ContextMenuStrip = cmsDeleteLib;
             tlp.Tag = tag;
 
             MaskedTextBox tb = new MaskedTextBox();
@@ -121,6 +122,7 @@ namespace MinGUI
             lbl.AutoSize = false;
             lbl.Dock = DockStyle.Fill;
             lbl.Text = text;
+            lbl.TextAlign = ContentAlignment.MiddleLeft;
 
             void textChanged()
             {
@@ -141,7 +143,7 @@ namespace MinGUI
                         lblOutput.Text = "One of the libraries selected has the same order number as another";
                     }
                 }
-                catch { }                
+                catch { }
             }
 
             tb.TextChanged += (s, e) => textChanged();
@@ -151,15 +153,79 @@ namespace MinGUI
             return tlp;
         }
 
-        private void frmMain_Load(object sender, EventArgs e)
+        public frmMainNew()
+        {            
+            InitializeComponent();
+            btnSettings.MouseHover += (s, e) => { btnSettings.BackgroundImage = global::MinGUI.Properties.Resources.SettingsHover; };
+            btnSettings.MouseLeave += (s, e) => { btnSettings.BackgroundImage = global::MinGUI.Properties.Resources.Settings; };
+            btnSettings.MouseDown += (s, e) => { btnSettings.BackgroundImage = global::MinGUI.Properties.Resources.SettingsDown; };
+            btnSettings.MouseUp += (s, e) => { btnSettings.BackgroundImage = global::MinGUI.Properties.Resources.SettingsHover; };
+            btnLibs.MouseDown += (s, e) =>
+            {
+                if (!libChecked)
+                {
+                    libChecked = true;
+                    btnLibs.BackgroundImage = Properties.Resources.tabLibUnselectedDown;
+                    btnPresets.BackgroundImage = Properties.Resources.presetsUnselected;
+                }
+                else { btnLibs.BackgroundImage = Properties.Resources.tabLibDown; };
+            };
+            btnLibs.MouseUp += (s, e) => 
+            {
+                btnLibs.BackgroundImage = Properties.Resources.tabLibHover;
+                flpPresets.Hide();
+                flpLibs.Show();
+            };
+            btnLibs.MouseEnter += (s, e) =>
+            {
+                if (libChecked) { btnLibs.BackgroundImage = Properties.Resources.tabLibHover; }
+                else { btnLibs.BackgroundImage = Properties.Resources.tabLibUnselectedHover; }
+            };
+            btnLibs.MouseLeave += (s, e) =>
+            {
+                if (libChecked) { btnLibs.BackgroundImage = Properties.Resources.tabLib; }
+                else { btnLibs.BackgroundImage = Properties.Resources.tabLibUnselected; }
+            };
+            btnPresets.MouseDown += (s, e) =>
+            {
+                if (libChecked)
+                {
+                    libChecked = false;
+                    btnPresets.BackgroundImage = Properties.Resources.presetsUnselectedDown;
+                    btnLibs.BackgroundImage = Properties.Resources.tabLibUnselected;
+                }
+                else { btnPresets.BackgroundImage = Properties.Resources.presetsDown; };
+            };
+            btnPresets.MouseUp += (s, e) => 
+            {
+                btnPresets.BackgroundImage = Properties.Resources.presetsHover;
+                flpLibs.Hide();
+                flpPresets.Show();
+            };
+            btnPresets.MouseEnter += (s, e) =>
+            {
+                if (!libChecked) { btnPresets.BackgroundImage = Properties.Resources.presetsHover; }
+                else { btnPresets.BackgroundImage = Properties.Resources.presetsUnselectedHover; }
+            };
+            btnPresets.MouseLeave += (s, e) =>
+            {
+                if (!libChecked) { btnPresets.BackgroundImage = Properties.Resources.presets; }
+                else { btnPresets.BackgroundImage = Properties.Resources.presetsUnselected; }
+            };
+        }
+
+        private void frmMainNew_Load(object sender, EventArgs e)
         {
             if (!File.Exists("mingui.db"))
             {
                 SQLiteConnection.CreateFile("mingui.db");
             }
             conn.Open();
-            SQLiteCommand createLibraries = new SQLiteCommand("CREATE TABLE IF NOT EXISTS `Libraries` (`libID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `libName` TEXT NOT NULL, `libSyntax`	TEXT NOT NULL); ", conn);
+            SQLiteCommand createLibraries = new SQLiteCommand("CREATE TABLE IF NOT EXISTS `Libraries` (`libID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `libName` TEXT NOT NULL, `libSyntax`	TEXT NOT NULL); CREATE TABLE IF NOT EXISTS `Presets` ( `pID` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `pName` TEXT, `pSyntax` TEXT);", conn);
             createLibraries.ExecuteNonQuery();
+            flpLibs.Dock = DockStyle.Fill;
+            flpPresets.Dock = DockStyle.Fill;
+            flpPresets.Hide();
             SQLiteCommand getLibs = new SQLiteCommand("SELECT * FROM Libraries", conn);
             SQLiteDataReader readLibs = getLibs.ExecuteReader();
             while (readLibs.Read())
@@ -170,13 +236,43 @@ namespace MinGUI
                     libName = readLibs[1].ToString(),
                     libSyntax = readLibs[2].ToString()
                 });
-                flpChkBxLib.Controls.Add(OrderedListItem(readLibs[0].ToString(), readLibs[1].ToString()));
+                flpLibs.Controls.Add(OrderedListItem(readLibs[0].ToString(), readLibs[1].ToString()));
+            }
+            SQLiteCommand getPresets = new SQLiteCommand("SELECT * FROM Presets", conn);
+            SQLiteDataReader readPresets = getPresets.ExecuteReader();
+            while (readPresets.Read())
+            {
+                presets.Add(new preset
+                {
+                    pID = Int32.Parse(readPresets[0].ToString()),
+                    pName = readPresets[1].ToString(),
+                    pSyntax = readPresets[2].ToString()
+                });
+                flpPresets.Controls.Add(new RadioButton()
+                {
+                    Text = readPresets[1].ToString(),
+                    Tag = readPresets[0].ToString(),
+                    ContextMenuStrip = cmsDeletePreset
+                });
             }
         }
 
         private void btnAddLib_Click(object sender, EventArgs e)
         {
-            addLib.Show();
+            frmAddLib AddLib = new frmAddLib();
+            AddLib.Show();
+        }
+
+        private void btnCreatePreset_Click(object sender, EventArgs e)
+        {
+            frmPreset Preset = new frmPreset();
+            Preset.Show();
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            frmSettings Settings = new frmSettings();
+            Settings.Show();
         }
 
         private void selectFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -184,34 +280,53 @@ namespace MinGUI
             ofdSelectFile.ShowDialog();
         }
 
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            cmsFile.SourceControl.Text = "";
-        }
-
         private void ofdSelectFile_FileOk(object sender, CancelEventArgs e)
         {
-            txtbxFilePath.Text = ofdSelectFile.FileName;
+            tbSource.Text = ofdSelectFile.FileName;
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private void setFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(txtbxFilePath.Text.Replace("\\", "\\\\")) || string.IsNullOrWhiteSpace(txtbxFileName.Text) || txtbxFileName.Text == "Program Name" || string.IsNullOrWhiteSpace(cbCompiler.Text))
+            sfdName.ShowDialog();
+        }
+
+        private void sfdName_FileOk(object sender, CancelEventArgs e)
+        {
+            tbOut.Text = sfdName.FileName;
+        }
+
+        private void btnBuild_Click(object sender, EventArgs e)
+        {
+            if (!File.Exists(tbSource.Text.Replace("\\", "\\\\")) || string.IsNullOrWhiteSpace(tbOut.Text) || tbOut.Text == "Program Name" || string.IsNullOrWhiteSpace(cbCompiler.Text))
             {
                 lblOutput.Text = "One of the inputs is either incorrect or empty";
                 return;
             }
-            compiler = cbCompiler.Text + " ";
-            compile = pnlCompile.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Tag.ToString() + " ";
-            name = "\"" + txtbxFileName.Text + "\" ";
-            path = "\"" + txtbxFilePath.Text + "\" ";
-            foreach (lib lib in libs.Where(x => x.libOrder != null).OrderBy(x => x.libOrder))
+            if (cbCompiler.Text == "gcc (C/C++)") { compiler = "gcc "; }
+            compile = pnlMethod.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Tag.ToString() + " ";
+            name = "\"" + tbOut.Text + "\" ";
+            path = "\"" + tbSource.Text + "\" ";
+            if (libChecked)
             {
-                libList += lib.libSyntax + " ".ToString();
+                foreach (lib lib in libs.Where(x => x.libOrder != null).OrderBy(x => x.libOrder))
+                {
+                    libList += lib.libSyntax + " ";
+                }
             }
+            else
+            {
+                temp = flpPresets.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Tag.ToString();
+                SQLiteCommand getPreset = new SQLiteCommand("SELECT * FROM Presets WHERE `pID` = \"" + temp + "\";", conn);
+                SQLiteDataReader readPreset = getPreset.ExecuteReader();
+                libList = readPreset[2].ToString();
+            }            
             lblOutput.Text = "All required information is present, making command...";
             cmdInfo.FileName = "cmd.exe";
-            cmdInfo.Arguments = "/C " + compiler + compile + name + path + libList;
+            cmdInfo.Arguments = "/C " + compiler + path + compile + name + libList;
+            if (pnlMethod.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Tag.ToString() == "-S" || pnlMethod.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Tag.ToString() == "-c")
+            {
+                cmdInfo.Arguments += " & PAUSE";
+            }
             cmd.StartInfo = cmdInfo;
             lblOutput.Text += "\nCommand is: " + cmdInfo.Arguments.ToString() + "\nCommand made, executing...";
             if (!error)
@@ -220,34 +335,66 @@ namespace MinGUI
             }
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            temp = cmsLib.SourceControl.Tag.ToString();
-            SQLiteCommand nonQuery = new SQLiteCommand("DELETE FROM Libraries WHERE libID = " + temp + ";", conn);
-            nonQuery.ExecuteNonQuery();
-            cmsLib.SourceControl.Dispose();
-        }
-
         private void tRefresh_Tick(object sender, EventArgs e)
         {
             List<lib> newLibs = new List<lib>();
-            SQLiteCommand getLibs = new SQLiteCommand("SELECT * FROM Libraries", conn);
-            SQLiteDataReader readGetLibs = getLibs.ExecuteReader();
+            SQLiteCommand command = new SQLiteCommand("SELECT * FROM Libraries", conn);
+            SQLiteDataReader readGetLibs = command.ExecuteReader();
             while (readGetLibs.Read())
             {
                 int y = libs.FindIndex(x => x.libID == Int32.Parse(readGetLibs[0].ToString()));
                 if (y >= 0) { }
                 else
                 {
-                    flpChkBxLib.Controls.Add(OrderedListItem(readGetLibs[0].ToString(), readGetLibs[1].ToString()));
+                    libs.Add(new lib()
+                    {
+                        libID = Int32.Parse(readGetLibs[0].ToString()),
+                        libName = readGetLibs[1].ToString(),
+                        libSyntax = readGetLibs[2].ToString()
+                    });
+                    flpLibs.Controls.Add(OrderedListItem(readGetLibs[0].ToString(), readGetLibs[1].ToString()));
+                }
+            }
+            command = new SQLiteCommand("SELECT * FROM Presets", conn);
+            SQLiteDataReader readPresets = command.ExecuteReader();
+            while (readPresets.Read())
+            {
+                int y = presets.FindIndex(x => x.pID == Int32.Parse(readPresets[0].ToString()));
+                if (y >= 0) { }
+                else
+                {
+                    presets.Add(new preset()
+                    {
+                        pID = Int32.Parse(readPresets[0].ToString()),
+                        pName = readPresets[1].ToString(),
+                        pSyntax = readPresets[2].ToString()
+                    });
+                    flpPresets.Controls.Add(new RadioButton
+                    {
+                        Text = readPresets[1].ToString(),
+                        Tag = readPresets[0].ToString(),
+                        ContextMenuStrip = cmsDeletePreset
+                    });
                 }
             }
         }
 
-        private void selectFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void deleteLibraryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            sfdName.ShowDialog();
-            txtbxFileName.Text = sfdName.FileName;
+            temp = cmsDeleteLib.SourceControl.Tag.ToString();
+            SQLiteCommand deleteLib = new SQLiteCommand("DELETE FROM Libraries WHERE `libID` = \"" + temp + "\";", conn);
+            deleteLib.ExecuteNonQuery();
+            flpLibs.Controls.Remove(cmsDeleteLib.SourceControl);
+            libs.RemoveAt(libs.FindIndex(x => x.libID == Int32.Parse(temp)));
+        }
+
+        private void deletePresetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            temp = cmsDeletePreset.SourceControl.Tag.ToString();
+            SQLiteCommand deletePreset = new SQLiteCommand("DELEtE FROM Presets WHERE `Pid` = \"" + temp + "\";", conn);
+            deletePreset.ExecuteNonQuery();
+            flpPresets.Controls.Remove(cmsDeletePreset.SourceControl);
+            presets.RemoveAt(presets.FindIndex(x => x.pID == Int32.Parse(temp)));
         }
     }
 }
